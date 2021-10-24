@@ -2,29 +2,30 @@ terraform {
   required_providers {
     snowflake = {
       source                = "chanzuckerberg/snowflake"
-      configuration_aliases = [snowflake.SECURITYADMIN]
+      configuration_aliases = [snowflake.ACCOUNTADMIN]
     }
   }
 }
 
 resource "snowflake_warehouse" "warehouse" {
+  provider = snowflake.ACCOUNTADMIN
+
   name             = local.name
   comment          = var.comment
   warehouse_size   = var.warehouse_size
-  #resource_monitor = "CUPS_SANDBOX_WH_MONITOR"
+  resource_monitor = snowflake_resource_monitor.monitor.name
 
   auto_suspend = var.auto_suspend
-  #auto_resume  = true
 }
 
-# resource "snowflake_resource_monitor" "cups_sandbox_monitor" {
-#   provider = snowflake.SYSADMIN
+resource "snowflake_resource_monitor" "monitor" {
+  provider = snowflake.ACCOUNTADMIN
 
-#   name         = "CUPS_SANDBOX_WH_MONITOR"
-#   credit_quota = 50
+  name         = "${local.name}_MONITOR"
+  credit_quota = var.credit_quota
 
-#   frequency       = "WEEKLY"
-#   start_timestamp = "IMMEDIATELY"
+  frequency       = var.frequency
+  start_timestamp = "IMMEDIATELY"
 
-#   notify_triggers = [80]
-# }
+  notify_triggers = [80]
+}

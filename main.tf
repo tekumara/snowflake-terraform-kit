@@ -25,3 +25,12 @@ provider "snowflake" {
   alias = "SECURITYADMIN"
   role  = "SECURITYADMIN"
 }
+
+provider "snowflake" {
+  username = var.snowflake_username
+  account  = var.snowflake_account
+  region   = var.snowflake_region
+
+  alias = "ACCOUNTADMIN"
+  role  = "ACCOUNTADMIN"
+}
