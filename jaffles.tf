@@ -1,10 +1,12 @@
 // roles
 resource "snowflake_role" "jaffles_admin" {
-  name = "JAFFLES_ADMIN"
+  provider = snowflake.SECURITYADMIN
+  name     = "JAFFLES_ADMIN"
 }
 
 resource "snowflake_role" "jaffles_reader" {
-  name = "JAFFLES_READER"
+  provider = snowflake.SECURITYADMIN
+  name     = "JAFFLES_READER"
 }
 
 // databases
