@@ -11,9 +11,9 @@ resource "snowflake_role" "jaffles_reader" {
 
 // databases
 module "databases" {
-  source        = "./modules/database"
+  source = "./modules/database"
   providers = {
-    snowflake = snowflake
+    snowflake               = snowflake
     snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
   }
 
@@ -25,21 +25,21 @@ module "databases" {
   for_each = {
     "PROD_JAFFLES" = {
       comment = "My jaffle shop (prod)"
+      // TODO: no-op for now, see tags.tf
       tags = {
-        // TODO: no-op for now, see tags.tf
-        pii         = true
+        pii = true
       }
       admins  = [snowflake_role.jaffles_admin.name]
       readers = [snowflake_role.jaffles_reader.name]
     }
     "DEV_JAFFLES" = {
       comment = "My jaffle shop (dev)"
+      // TODO: no-op for now, see tags.tf
       tags = {
-        // TODO: no-op for now, see tags.tf
-        pii         = true
+        pii = true
       }
       admins  = [snowflake_role.jaffles_admin.name]
-      readers = [snowflake_role.jaffles_reader.name]
+      readers = []
     }
   }
 }
