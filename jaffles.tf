@@ -58,10 +58,12 @@ module "warehouses" {
   for_each = {
     "PROD_JAFFLES_WH" = {
       comment = "Jaffle shop warehouse (prod)"
+      warehouse_roles = [snowflake_role.jaffles_admin.name]
 
     }
     "DEV_JAFFLES_WH" = {
       comment = "Jaffle shop warehouse (dev)"
+      warehouse_roles = [snowflake_role.jaffles_admin.name]
     }
   }
 }

@@ -31,7 +31,7 @@ variable "credit_quota" {
 }
 
 variable "frequency" {
-  description = "The frequency interval at which the credit usage resets to 0."
+  description = "The frequency interval at which the credit usage resets to 0"
   type        = string
   default     = "WEEKLY"
 
@@ -39,4 +39,10 @@ variable "frequency" {
     condition     = contains(["MONTHLY", "DAILY", "WEEKLY", "YEARLY", "NEVER"], var.frequency)
     error_message = "Invalid frequency."
   }
+}
+
+variable "warehouse_roles" {
+  description = "Roles that can use the warehouse"
+  type = list(string)
+  default = []
 }
