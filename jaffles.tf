@@ -1,11 +1,11 @@
 module "databases" {
-  source = "./modules/product_database"
-  database_name = "${each.key}"
+  source        = "./modules/product_database"
+  database_name = each.key
   for_each = {
     "PROD_JAFFLES" = {
       comment = "My jaffle shop (prod)"
       readers = []
-      admins = []
+      admins  = []
       tags = {
         dbt_managed = true
       }
@@ -13,11 +13,10 @@ module "databases" {
     "DEV_JAFFLES" = {
       comment = "My jaffle shop (dev)"
       readers = []
-      admins = []
+      admins  = []
       tags = {
         dbt_managed = true
       }
     }
   }
-
 }
