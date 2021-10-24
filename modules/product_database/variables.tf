@@ -8,3 +8,15 @@ variable "comment" {
   type        = string
   default     = null
 }
+
+variable "admins" {
+  description = "Roles to assign admin privleges to"
+  type = set(string)
+  default = []
+}
+
+variable "readers" {
+  description = "Roles to assign reader privleges to"
+  type = set(string)
+  default = []
+}
