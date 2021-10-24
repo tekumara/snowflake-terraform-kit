@@ -45,5 +45,23 @@ module "databases" {
 }
 
 // warehouses + monitors
+module "warehouses" {
+  source = "./modules/warehouse"
+  providers = {
+    snowflake               = snowflake
+    snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
+  }
 
+  name    = each.key
+  comment = each.value.comment
 
+  for_each = {
+    "PROD_JAFFLES_WH" = {
+      comment = "Jaffle shop warehouse (prod)"
+
+    }
+    "DEV_JAFFLES_WH" = {
+      comment = "Jaffle shop warehouse (dev)"
+    }
+  }
+}
