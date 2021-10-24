@@ -1,3 +1,3 @@
 locals {
-  database_name   = upper(var.database_name)
+  name   = upper(var.name)
 }

@@ -8,6 +8,6 @@ terraform {
 }
 
 resource "snowflake_database" "db" {
-  name    = local.database_name
+  name    = local.name
   comment = var.comment
 }

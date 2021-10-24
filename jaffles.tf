@@ -17,10 +17,10 @@ module "databases" {
     snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
   }
 
-  database_name = each.key
-  comment       = each.value.comment
-  admins        = each.value.admins
-  readers       = each.value.readers
+  name    = each.key
+  comment = each.value.comment
+  admins  = each.value.admins
+  readers = each.value.readers
 
   for_each = {
     "PROD_JAFFLES" = {
@@ -43,3 +43,7 @@ module "databases" {
     }
   }
 }
+
+// warehouses + monitors
+
+
