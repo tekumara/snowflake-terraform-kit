@@ -11,12 +11,11 @@ resource "snowflake_role" "jaffles_reader" {
 
 // databases
 module "databases" {
-  source        = "./modules/product_database"
+  source        = "./modules/database"
   providers = {
     snowflake = snowflake
     snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
   }
-
 
   database_name = each.key
   comment       = each.value.comment
