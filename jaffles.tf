@@ -6,7 +6,6 @@ module "databases" {
       comment = "My jaffle shop (prod)"
       readers = []
       admins = []
-      # metadata only, TODO: apply these when https://github.com/chanzuckerberg/terraform-provider-snowflake/issues/702 lands
       tags = {
         dbt_managed = true
       }
@@ -15,7 +14,6 @@ module "databases" {
       comment = "My jaffle shop (dev)"
       readers = []
       admins = []
-      # metadata only, TODO: apply these when https://github.com/chanzuckerberg/terraform-provider-snowflake/issues/702 lands
       tags = {
         dbt_managed = true
       }
