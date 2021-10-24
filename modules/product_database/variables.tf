@@ -10,13 +10,13 @@ variable "comment" {
 }
 
 variable "admins" {
-  description = "Roles to assign admin privleges to"
+  description = "Roles to assign admin privileges to"
   type = set(string)
   default = []
 }
 
 variable "readers" {
-  description = "Roles to assign reader privleges to"
+  description = "Roles to assign reader privileges to"
   type = set(string)
   default = []
 }

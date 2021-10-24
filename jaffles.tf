@@ -12,6 +12,12 @@ resource "snowflake_role" "jaffles_reader" {
 // databases
 module "databases" {
   source        = "./modules/product_database"
+  providers = {
+    snowflake = snowflake
+    snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
+  }
+
+
   database_name = each.key
   comment       = each.value.comment
   admins        = each.value.admins
@@ -21,8 +27,7 @@ module "databases" {
     "PROD_JAFFLES" = {
       comment = "My jaffle shop (prod)"
       tags = {
-        // TODO: terraform metadata only
-        dbt_managed = true
+        // TODO: no-op for now, see tags.tf
         pii         = true
       }
       admins  = [snowflake_role.jaffles_admin.name]
@@ -31,8 +36,7 @@ module "databases" {
     "DEV_JAFFLES" = {
       comment = "My jaffle shop (dev)"
       tags = {
-        // TODO: terraform metadata only
-        dbt_managed = true
+        // TODO: no-op for now, see tags.tf
         pii         = true
       }
       admins  = [snowflake_role.jaffles_admin.name]
