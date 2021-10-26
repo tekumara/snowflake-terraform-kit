@@ -24,7 +24,8 @@ locals {
       "CREATE STAGE",
       "CREATE STREAM",
       "CREATE TABLE",
-      # "CREATE TAG", TODO: see tags.tf
+      # TODO: waiting for https://github.com/chanzuckerberg/terraform-provider-snowflake/issues/734
+      # "CREATE TAG",
       "CREATE TASK",
       "CREATE VIEW",
       "MODIFY",

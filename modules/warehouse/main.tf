@@ -4,7 +4,6 @@ terraform {
       source                = "chanzuckerberg/snowflake"
       configuration_aliases = [snowflake.ACCOUNTADMIN]
     }
-    time = {}
   }
 }
 
