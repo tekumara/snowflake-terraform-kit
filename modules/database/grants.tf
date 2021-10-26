@@ -1,12 +1,14 @@
 // reference: https://docs.snowflake.com/en/user-guide/security-access-control-privileges.html
 
 locals {
+  # granted to readers + admins
   read_privileges = {
     database = ["USAGE"]
     schema   = ["USAGE"]
     table    = ["SELECT", "REFERENCES"]
     view     = ["SELECT", "REFERENCES"]
   }
+  # granted to admins only
   additional_admin_privileges = {
     database = ["CREATE SCHEMA"]
     schema = [
@@ -72,7 +74,7 @@ resource "snowflake_view_grant" "read_privileges" {
 
 // apply additional_admin_privileges defined above to admins
 
-resource "snowflake_database_grant" "admin" {
+resource "snowflake_database_grant" "additional_admin_privileges" {
   for_each = toset(local.additional_admin_privileges.database)
 
   database_name = snowflake_database.db.name
@@ -81,7 +83,7 @@ resource "snowflake_database_grant" "admin" {
 }
 
 
-resource "snowflake_schema_grant" "admin" {
+resource "snowflake_schema_grant" "additional_admin_privileges" {
   provider = snowflake.SECURITYADMIN
   for_each = toset(local.additional_admin_privileges.schema)
 
@@ -91,7 +93,7 @@ resource "snowflake_schema_grant" "admin" {
   roles         = var.admins
 }
 
-resource "snowflake_table_grant" "admin" {
+resource "snowflake_table_grant" "additional_admin_privileges" {
   provider = snowflake.SECURITYADMIN
   for_each = toset(local.additional_admin_privileges.table)
 
@@ -101,7 +103,7 @@ resource "snowflake_table_grant" "admin" {
   roles         = var.admins
 }
 
-resource "snowflake_view_grant" "admin" {
+resource "snowflake_view_grant" "additional_admin_privileges" {
   provider = snowflake.SECURITYADMIN
   for_each = toset(local.additional_admin_privileges.view)
 
