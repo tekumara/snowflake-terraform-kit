@@ -20,14 +20,6 @@ resource "snowflake_warehouse" "warehouse" {
   auto_suspend = var.auto_suspend
 }
 
-resource "time_offset" "monitor_start_time" {
-  // a stable timestamp stored in the tf state to
-  // used to avoid perpetual differences and resource recreation
-
-  // start time needs to be in the future
-  offset_days = 1
-}
-
 resource "snowflake_resource_monitor" "monitor" {
   provider = snowflake.ACCOUNTADMIN
 
@@ -36,12 +28,13 @@ resource "snowflake_resource_monitor" "monitor" {
 
   frequency = var.frequency
 
-  // start at today midnight
-  // NB: this is UTC midnight not local midnight
-  start_timestamp = formatdate(
-    "YYYY-MM-DD 00:00",
-    time_offset.monitor_start_time.rfc3339
-  )
+  start_timestamp = "IMMEDIATELY"
 
   notify_triggers = [80]
+
+  lifecycle {
+    ignore_changes = [
+      start_timestamp
+    ]
+  }
 }

@@ -1,3 +1,10 @@
+locals {
+  // TODO: no-op for now, see tags.tf
+  tags = {
+    pii = true
+  }
+}
+
 // roles
 resource "snowflake_role" "jaffles_admin" {
   provider = snowflake.SECURITYADMIN
@@ -25,19 +32,13 @@ module "databases" {
   for_each = {
     "PROD_JAFFLES" = {
       comment = "My jaffle shop (prod)"
-      // TODO: no-op for now, see tags.tf
-      tags = {
-        pii = true
-      }
+      tags    = local.tags
       admins  = [snowflake_role.jaffles_admin.name]
       readers = [snowflake_role.jaffles_reader.name]
     }
     "DEV_JAFFLES" = {
       comment = "My jaffle shop (dev)"
-      // TODO: no-op for now, see tags.tf
-      tags = {
-        pii = true
-      }
+      tags    = local.tags
       admins  = [snowflake_role.jaffles_admin.name]
       readers = []
     }
@@ -57,12 +58,13 @@ module "warehouses" {
 
   for_each = {
     "PROD_JAFFLES_WH" = {
-      comment = "Jaffle shop warehouse (prod)"
+      comment         = "Jaffle shop warehouse (prod)"
+      tags            = local.tags
       warehouse_roles = [snowflake_role.jaffles_admin.name]
-
     }
     "DEV_JAFFLES_WH" = {
-      comment = "Jaffle shop warehouse (dev)"
+      comment         = "Jaffle shop warehouse (dev)"
+      tags            = local.tags
       warehouse_roles = [snowflake_role.jaffles_admin.name]
     }
   }
