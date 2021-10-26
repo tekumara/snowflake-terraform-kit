@@ -1,17 +1,15 @@
 // reference: https://docs.snowflake.com/en/user-guide/security-access-control-privileges.html
 
 locals {
-  reader_privileges = {
+  read_privileges = {
     database = ["USAGE"]
     schema   = ["USAGE"]
     table    = ["SELECT", "REFERENCES"]
     view     = ["SELECT", "REFERENCES"]
   }
-  admin_privileges = {
-    database = concat(local.reader_privileges.database, [
-      "CREATE SCHEMA",
-    ])
-    schema = concat(local.reader_privileges.schema, [
+  additional_admin_privileges = {
+    database = ["CREATE SCHEMA"]
+    schema = [
       "CREATE FUNCTION",
       "CREATE MATERIALIZED VIEW",
       "CREATE PROCEDURE",
@@ -21,61 +19,61 @@ locals {
       "CREATE VIEW",
       "MODIFY",
       "MONITOR",
-    ])
-    table = concat(local.reader_privileges.table, [
+    ]
+    table = [
       "DELETE",
       "INSERT",
       "TRUNCATE",
       "UPDATE",
-    ])
-    view = local.reader_privileges.view
+    ]
+    view = []
   }
 }
 
-// apply reader grants defined above
+// apply read_privileges defined above to readers + admins
 
-resource "snowflake_database_grant" "reader" {
-  for_each = toset(local.reader_privileges.database)
+resource "snowflake_database_grant" "read_privileges" {
+  for_each = toset(local.read_privileges.database)
 
   database_name = snowflake_database.db.name
   privilege     = each.key
-  roles         = var.readers
+  roles         = concat(var.readers, var.admins)
 }
 
-resource "snowflake_schema_grant" "reader" {
+resource "snowflake_schema_grant" "read_privileges" {
   provider = snowflake.SECURITYADMIN
-  for_each = toset(local.reader_privileges.schema)
+  for_each = toset(local.read_privileges.schema)
 
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = var.readers
+  roles         = concat(var.readers, var.admins)
 }
 
-resource "snowflake_table_grant" "reader" {
+resource "snowflake_table_grant" "read_privileges" {
   provider = snowflake.SECURITYADMIN
-  for_each = toset(local.reader_privileges.table)
+  for_each = toset(local.read_privileges.table)
 
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = var.readers
+  roles         = concat(var.readers, var.admins)
 }
 
-resource "snowflake_view_grant" "reader" {
+resource "snowflake_view_grant" "read_privileges" {
   provider = snowflake.SECURITYADMIN
-  for_each = toset(local.reader_privileges.view)
+  for_each = toset(local.read_privileges.view)
 
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = var.readers
+  roles         = concat(var.readers, var.admins)
 }
 
-// apply admin grants defined above
+// apply additional_admin_privileges defined above to admins
 
 resource "snowflake_database_grant" "admin" {
-  for_each = toset(local.admin_privileges.database)
+  for_each = toset(local.additional_admin_privileges.database)
 
   database_name = snowflake_database.db.name
   privilege     = each.key
@@ -85,7 +83,7 @@ resource "snowflake_database_grant" "admin" {
 
 resource "snowflake_schema_grant" "admin" {
   provider = snowflake.SECURITYADMIN
-  for_each = toset(local.admin_privileges.schema)
+  for_each = toset(local.additional_admin_privileges.schema)
 
   database_name = snowflake_database.db.name
   on_future     = true
@@ -95,7 +93,7 @@ resource "snowflake_schema_grant" "admin" {
 
 resource "snowflake_table_grant" "admin" {
   provider = snowflake.SECURITYADMIN
-  for_each = toset(local.admin_privileges.table)
+  for_each = toset(local.additional_admin_privileges.table)
 
   database_name = snowflake_database.db.name
   on_future     = true
@@ -105,7 +103,7 @@ resource "snowflake_table_grant" "admin" {
 
 resource "snowflake_view_grant" "admin" {
   provider = snowflake.SECURITYADMIN
-  for_each = toset(local.admin_privileges.view)
+  for_each = toset(local.additional_admin_privileges.view)
 
   database_name = snowflake_database.db.name
   on_future     = true
