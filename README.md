@@ -7,6 +7,28 @@ Modules for:
 
 The [jaffle shop example](jaffles.tf) uses these modules to create production and development databases.
 
+## Usage
+
+Create an _account.tfvars_ file:
+
+```
+snowflake_account  = "JAFFLE_KING"
+snowflake_username = "alice"
+snowflake_region   = "ap-southeast-2"
+```
+
+Set your password as an environment variable:
+
+```
+export SNOWFLAKE_PASSWORD=topsecret
+```
+
+Create the [example](jaffles.tf) terraform plan:
+
+```
+terraform apply -var-file account.tfvars
+```
+
 ## Notes
 
 All objects are owned by SYSADMIN.
