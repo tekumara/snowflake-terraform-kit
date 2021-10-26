@@ -12,12 +12,20 @@ locals {
   additional_admin_privileges = {
     database = ["CREATE SCHEMA"]
     schema = [
+      "CREATE EXTERNAL TABLE",
+      "CREATE FILE FORMAT",
       "CREATE FUNCTION",
+      "CREATE MASKING POLICY",
       "CREATE MATERIALIZED VIEW",
+      "CREATE PIPE",
       "CREATE PROCEDURE",
+      "CREATE ROW ACCESS POLICY",
       "CREATE SEQUENCE",
+      "CREATE STAGE",
+      "CREATE STREAM",
       "CREATE TABLE",
       # "CREATE TAG", TODO: see tags.tf
+      "CREATE TASK",
       "CREATE VIEW",
       "MODIFY",
       "MONITOR",
