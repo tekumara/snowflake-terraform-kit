@@ -58,8 +58,9 @@ module "warehouses" {
     snowflake.ACCOUNTADMIN = snowflake.ACCOUNTADMIN
   }
 
-  name    = each.key
-  comment = each.value.comment
+  name            = each.key
+  comment         = each.value.comment
+  warehouse_roles = each.value.warehouse_roles
 
   for_each = {
     "PROD_JAFFLES_WH" = {
