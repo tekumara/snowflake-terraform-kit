@@ -6,9 +6,14 @@ locals {
 }
 
 // roles
-resource "snowflake_role" "jaffles_admin" {
+resource "snowflake_role" "prod_jaffles_admin" {
   provider = snowflake.SECURITYADMIN
-  name     = "JAFFLES_ADMIN"
+  name     = "PROD_JAFFLES_ADMIN"
+}
+
+resource "snowflake_role" "dev_jaffles_admin" {
+  provider = snowflake.SECURITYADMIN
+  name     = "DEV_JAFFLES_ADMIN"
 }
 
 resource "snowflake_role" "jaffles_reader" {
@@ -33,13 +38,13 @@ module "databases" {
     "PROD_JAFFLES" = {
       comment = "My jaffle shop (prod)"
       tags    = local.tags
-      admins  = [snowflake_role.jaffles_admin.name]
+      admins  = [snowflake_role.prod_jaffles_admin.name]
       readers = [snowflake_role.jaffles_reader.name]
     }
     "DEV_JAFFLES" = {
       comment = "My jaffle shop (dev)"
       tags    = local.tags
-      admins  = [snowflake_role.jaffles_admin.name]
+      admins  = [snowflake_role.dev_jaffles_admin.name]
       readers = []
     }
   }
@@ -60,12 +65,12 @@ module "warehouses" {
     "PROD_JAFFLES_WH" = {
       comment         = "Jaffle shop warehouse (prod)"
       tags            = local.tags
-      warehouse_roles = [snowflake_role.jaffles_admin.name]
+      warehouse_roles = [snowflake_role.prod_jaffles_admin.name]
     }
     "DEV_JAFFLES_WH" = {
       comment         = "Jaffle shop warehouse (dev)"
       tags            = local.tags
-      warehouse_roles = [snowflake_role.jaffles_admin.name]
+      warehouse_roles = [snowflake_role.dev_jaffles_admin.name]
     }
   }
 }
