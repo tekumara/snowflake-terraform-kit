@@ -1,14 +1,14 @@
 // reference: https://docs.snowflake.com/en/user-guide/security-access-control-privileges.html
 
 locals {
-  # granted to reader_role + admin_role
+  # granted to readers + admins
   read_privileges = {
     database = ["USAGE"]
     schema   = ["USAGE"]
     table    = ["SELECT", "REFERENCES"]
     view     = ["SELECT", "REFERENCES"]
   }
-  # granted to admin_role only
+  # granted to admins only
   additional_admin_privileges = {
     database = ["CREATE SCHEMA"]
     schema = [
@@ -41,14 +41,14 @@ locals {
   }
 }
 
-// apply read_privileges defined above to reader_role + admin_role
+// apply read_privileges defined above to readers + admins
 
 resource "snowflake_database_grant" "read_privileges" {
   for_each = toset(local.read_privileges.database)
 
   database_name = snowflake_database.db.name
   privilege     = each.key
-  roles         = compact([var.reader_role, var.admin_role])
+  roles         = concat(var.readers, var.admins)
 }
 
 resource "snowflake_schema_grant" "read_privileges" {
@@ -58,7 +58,7 @@ resource "snowflake_schema_grant" "read_privileges" {
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = compact([var.reader_role, var.admin_role])
+  roles         = concat(var.readers, var.admins)
 }
 
 resource "snowflake_table_grant" "read_privileges" {
@@ -68,7 +68,7 @@ resource "snowflake_table_grant" "read_privileges" {
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = compact([var.reader_role, var.admin_role])
+  roles         = concat(var.readers, var.admins)
 }
 
 resource "snowflake_view_grant" "read_privileges" {
@@ -78,17 +78,17 @@ resource "snowflake_view_grant" "read_privileges" {
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = compact([var.reader_role, var.admin_role])
+  roles         = concat(var.readers, var.admins)
 }
 
-// apply additional_admin_privileges defined above to admin_role
+// apply additional_admin_privileges defined above to admins
 
 resource "snowflake_database_grant" "additional_admin_privileges" {
   for_each = toset(local.additional_admin_privileges.database)
 
   database_name = snowflake_database.db.name
   privilege     = each.key
-  roles         = compact([var.admin_role])
+  roles         = var.admins
 }
 
 
@@ -99,7 +99,7 @@ resource "snowflake_schema_grant" "additional_admin_privileges" {
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = compact([var.admin_role])
+  roles         = var.admins
 }
 
 resource "snowflake_table_grant" "additional_admin_privileges" {
@@ -109,7 +109,7 @@ resource "snowflake_table_grant" "additional_admin_privileges" {
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = compact([var.admin_role])
+  roles         = var.admins
 }
 
 resource "snowflake_view_grant" "additional_admin_privileges" {
@@ -119,5 +119,5 @@ resource "snowflake_view_grant" "additional_admin_privileges" {
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = compact([var.admin_role])
+  roles         = var.admins
 }

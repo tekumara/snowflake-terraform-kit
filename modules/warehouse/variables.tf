@@ -41,8 +41,8 @@ variable "frequency" {
   }
 }
 
-variable "warehouse_role" {
-  description = "Role that can use the warehouse"
-  type = string
-  default = ""
+variable "warehouse_roles" {
+  description = "Roles that can use the warehouse"
+  type = list(string)
+  default = []
 }

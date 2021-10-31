@@ -9,14 +9,14 @@ variable "comment" {
   default     = null
 }
 
-variable "admin_role" {
-  description = "Role to assign admin/owner privileges to"
-  type = string
-  default = ""
+variable "admins" {
+  description = "Roles to assign admin privileges to"
+  type = list(string)
+  default = []
 }
 
-variable "reader_role" {
-  description = "Role to assign read privileges to"
-  type = string
-  default = ""
+variable "readers" {
+  description = "Roles to assign reader privileges to"
+  type = list(string)
+  default = []
 }
