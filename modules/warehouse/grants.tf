@@ -4,24 +4,24 @@
 resource "snowflake_warehouse_grant" "modify" {
   warehouse_name    = local.name
   privilege         = "MODIFY"
-  roles             = var.warehouse_roles
+  roles             = compact([var.warehouse_role])
 }
 
 resource "snowflake_warehouse_grant" "monitor" {
   warehouse_name    = local.name
   privilege         = "MONITOR"
-  roles             = var.warehouse_roles
+  roles             = compact([var.warehouse_role])
 }
 
 resource "snowflake_warehouse_grant" "operate" {
   warehouse_name    = local.name
   privilege         = "OPERATE"
-  roles             = var.warehouse_roles
+  roles             = compact([var.warehouse_role])
 }
 
 resource "snowflake_warehouse_grant" "usage" {
   warehouse_name    = local.name
   privilege         = "USAGE"
-  roles             = var.warehouse_roles
+  roles             = compact([var.warehouse_role])
 }
 

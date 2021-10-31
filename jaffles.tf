@@ -22,7 +22,7 @@ resource "snowflake_role" "jaffles_reader" {
 }
 
 resource "snowflake_role_grants" "prod_jaffles_admin" {
-  provider = snowflake.SECURITYADMIN
+  provider  = snowflake.SECURITYADMIN
   role_name = snowflake_role.prod_jaffles_admin.name
 
   roles = [
@@ -33,7 +33,7 @@ resource "snowflake_role_grants" "prod_jaffles_admin" {
 }
 
 resource "snowflake_role_grants" "dev_jaffles_admin" {
-  provider = snowflake.SECURITYADMIN
+  provider  = snowflake.SECURITYADMIN
   role_name = snowflake_role.dev_jaffles_admin.name
 
   roles = [
@@ -51,23 +51,23 @@ module "databases" {
     snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
   }
 
-  name    = each.key
-  comment = each.value.comment
-  admins  = each.value.admins
-  readers = each.value.readers
+  name        = each.key
+  comment     = each.value.comment
+  admin_role  = each.value.admin_role
+  reader_role = each.value.reader_role
 
   for_each = {
     "PROD_JAFFLES" = {
-      comment = "My jaffle shop (prod)"
-      tags    = local.tags
-      admins  = [snowflake_role.prod_jaffles_admin.name]
-      readers = [snowflake_role.jaffles_reader.name]
+      comment     = "My jaffle shop (prod)"
+      tags        = local.tags
+      admin_role  = snowflake_role.prod_jaffles_admin.name
+      reader_role = snowflake_role.jaffles_reader.name
     }
     "DEV_JAFFLES" = {
-      comment = "My jaffle shop (dev)"
-      tags    = local.tags
-      admins  = [snowflake_role.dev_jaffles_admin.name]
-      readers = []
+      comment     = "My jaffle shop (dev)"
+      tags        = local.tags
+      admin_role  = snowflake_role.dev_jaffles_admin.name
+      reader_role = ""
     }
   }
 }
@@ -82,18 +82,18 @@ module "warehouses" {
 
   name            = each.key
   comment         = each.value.comment
-  warehouse_roles = each.value.warehouse_roles
+  warehouse_role = each.value.warehouse_role
 
   for_each = {
     "PROD_JAFFLES_WH" = {
       comment         = "Jaffle shop warehouse (prod)"
       tags            = local.tags
-      warehouse_roles = [snowflake_role.prod_jaffles_admin.name]
+      warehouse_role = snowflake_role.prod_jaffles_admin.name
     }
     "DEV_JAFFLES_WH" = {
       comment         = "Jaffle shop warehouse (dev)"
       tags            = local.tags
-      warehouse_roles = [snowflake_role.dev_jaffles_admin.name]
+      warehouse_role = snowflake_role.dev_jaffles_admin.name
     }
   }
 }
