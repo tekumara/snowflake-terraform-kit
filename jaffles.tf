@@ -21,6 +21,28 @@ resource "snowflake_role" "jaffles_reader" {
   name     = "JAFFLES_READER"
 }
 
+resource "snowflake_role_grants" "prod_jaffles_admin" {
+  provider = snowflake.SECURITYADMIN
+  role_name = snowflake_role.prod_jaffles_admin.name
+
+  roles = [
+    "SYSADMIN",
+  ]
+
+  users = []
+}
+
+resource "snowflake_role_grants" "dev_jaffles_admin" {
+  provider = snowflake.SECURITYADMIN
+  role_name = snowflake_role.dev_jaffles_admin.name
+
+  roles = [
+    "SYSADMIN",
+  ]
+
+  users = []
+}
+
 // databases
 module "databases" {
   source = "./modules/database"
