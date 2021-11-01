@@ -97,3 +97,33 @@ module "warehouses" {
     }
   }
 }
+
+resource "snowflake_user" "user" {
+  provider  = snowflake.SECURITYADMIN
+  name = "TEST6"
+  // no password
+
+  provisioner "local-exec" {
+      command = "echo 'FETCH ${self.name}'"
+  }
+}
+
+resource "snowsql_exec" "user_password" {
+  name = "user_password"
+  depends_on = [
+    snowflake_user.user
+  ]
+
+  create {
+    statements = <<-EOT
+    ALTER USER ${snowflake_user.user.name} SET PASSWORD = ${local.password};
+    EOT
+  }
+
+  delete {
+    statements = "SELECT 1;"
+  }
+
+  delete_on_create = true
+}
+
