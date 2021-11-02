@@ -4,6 +4,7 @@ Modules for:
 
 - [database](modules/database) creates a database and assigns reader and admin role grants to the passed in roles. Schemas and tables are managed by another application (eg: dbt) using the admin role.
 - [warehouse](modules/warehouse) creates a warehouse and resource monitor and assigns role grants to the passed in role.
+- [user](modules/user) creates a Snowflake user and AWS Secrets Manager secret to hold the password.
 
 The [jaffle shop example](jaffles.tf) uses these modules to create production and development databases.
 

@@ -5,6 +5,29 @@ locals {
   }
 }
 
+// service account users
+module "user" {
+  source = "./modules/user"
+  providers = {
+    snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
+  }
+
+  name    = each.key
+  comment = each.value.comment
+
+  for_each = {
+    "PROD_JAFFLES_SA" = {
+      comment = "Jaffle shop service account (prod)"
+      tags    = local.tags
+    }
+    "DEV_JAFFLES_SA" = {
+      comment = "Jaffle shop service account (dev)"
+      tags    = local.tags
+    }
+  }
+}
+
+
 // roles
 resource "snowflake_role" "prod_jaffles_admin" {
   provider = snowflake.SECURITYADMIN
@@ -29,7 +52,7 @@ resource "snowflake_role_grants" "prod_jaffles_admin" {
     "SYSADMIN",
   ]
 
-  users = []
+  users = [module.user["PROD_JAFFLES_SA"].name]
 }
 
 resource "snowflake_role_grants" "dev_jaffles_admin" {
@@ -40,7 +63,7 @@ resource "snowflake_role_grants" "dev_jaffles_admin" {
     "SYSADMIN",
   ]
 
-  users = []
+  users = [module.user["DEV_JAFFLES_SA"].name]
 }
 
 // databases
@@ -76,7 +99,6 @@ module "databases" {
 module "warehouses" {
   source = "./modules/warehouse"
   providers = {
-    snowflake              = snowflake
     snowflake.ACCOUNTADMIN = snowflake.ACCOUNTADMIN
   }
 
