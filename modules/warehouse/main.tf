@@ -2,7 +2,7 @@ terraform {
   required_providers {
     snowflake = {
       source                = "chanzuckerberg/snowflake"
-      configuration_aliases = [snowflake.ACCOUNTADMIN]
+      configuration_aliases = [snowflake.ACCOUNTADMIN, snowflake.SYSADMIN]
     }
   }
 }
