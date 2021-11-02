@@ -6,8 +6,8 @@ locals {
 }
 
 // service account users
-module "user" {
-  source = "./modules/user"
+module "service-account" {
+  source = "./modules/service-account"
   providers = {
     snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
   }
@@ -52,7 +52,7 @@ resource "snowflake_role_grants" "prod_jaffles_admin" {
     "SYSADMIN",
   ]
 
-  users = [module.user["PROD_JAFFLES_SA"].name]
+  users = [module.service-account["PROD_JAFFLES_SA"].name]
 }
 
 resource "snowflake_role_grants" "dev_jaffles_admin" {
@@ -63,7 +63,7 @@ resource "snowflake_role_grants" "dev_jaffles_admin" {
     "SYSADMIN",
   ]
 
-  users = [module.user["DEV_JAFFLES_SA"].name]
+  users = [module.service-account["DEV_JAFFLES_SA"].name]
 }
 
 // databases
