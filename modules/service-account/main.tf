@@ -9,16 +9,16 @@ terraform {
 }
 
 resource "snowflake_user" "user" {
-  provider  = snowflake.SECURITYADMIN
-  name = local.name
-  comment = var.comment
+  provider = snowflake.SECURITYADMIN
+  name     = local.name
+  comment  = var.comment
   // password set below
 }
 
 data "snowflake_current_account" "this" {}
 
 resource "aws_secretsmanager_secret" "snowflake_user" {
-  name = "snowflakeuser/${snowflake_user.user.name}"
+  name        = "snowflakeuser/${snowflake_user.user.name}"
   description = "Snowflake user password"
 
   // force delete, so we can recreate the secret immediately if needed
@@ -34,7 +34,7 @@ resource "null_resource" "set-password" {
   // set password for snowflake and store it in the secret
   // this is done in local-exec so it's not stored in the tf statefile
   provisioner "local-exec" {
-      # see https://github.com/tekumara/sfpassman
-      command = "sfpassman ${snowflake_user.user.name} ${aws_secretsmanager_secret.snowflake_user.name} $SNOWFLAKE_USER ${data.snowflake_current_account.this.account} $SNOWFLAKE_REGION"
+    # see https://github.com/tekumara/sfpassman
+    command = "sfpassman ${snowflake_user.user.name} ${aws_secretsmanager_secret.snowflake_user.name} $SNOWFLAKE_USER ${data.snowflake_current_account.this.account} $SNOWFLAKE_REGION"
   }
 }

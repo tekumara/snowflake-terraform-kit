@@ -43,6 +43,6 @@ variable "frequency" {
 
 variable "warehouse_roles" {
   description = "Roles that can use the warehouse"
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }

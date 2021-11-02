@@ -99,7 +99,8 @@ module "databases" {
 module "warehouses" {
   source = "./modules/warehouse"
   providers = {
-    snowflake.ACCOUNTADMIN = snowflake.ACCOUNTADMIN
+    snowflake.ACCOUNTADMIN  = snowflake.ACCOUNTADMIN
+    snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
   }
 
   name            = each.key

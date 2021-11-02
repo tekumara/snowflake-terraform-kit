@@ -1,3 +1,3 @@
 locals {
-  name   = upper(var.name)
+  name = upper(var.name)
 }
