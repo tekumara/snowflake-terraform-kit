@@ -12,17 +12,29 @@ resource "snowflake_user" "user" {
   provider  = snowflake.SECURITYADMIN
   name = local.name
   comment = var.comment
-
-  // set password in local-exec so its not stored in the tf statefile
-  provisioner "local-exec" {
-      command = "echo 'TODO: SET PASSWORD FOR ${self.name}'"
-  }
+  // password set below
 }
 
+data "snowflake_current_account" "this" {}
+
 resource "aws_secretsmanager_secret" "snowflake_user" {
-  depends_on = [
-    snowflake_user.user
-  ]
   name = "snowflakeuser/${snowflake_user.user.name}"
   description = "Snowflake user password"
+
+  // force delete, so we can recreate the secret immediately if needed
+  recovery_window_in_days = 0
+}
+
+resource "null_resource" "set-password" {
+  # Changes to any instance of the cluster requires re-provisioning
+  triggers = {
+    secret_name = aws_secretsmanager_secret.snowflake_user.name
+  }
+
+  // set password for snowflake and store it in the secret
+  // this is done in local-exec so it's not stored in the tf statefile
+  provisioner "local-exec" {
+      # see https://github.com/tekumara/sfpassman
+      command = "sfpassman ${snowflake_user.user.name} ${aws_secretsmanager_secret.snowflake_user.name} $SNOWFLAKE_USER ${data.snowflake_current_account.this.account} $SNOWFLAKE_REGION"
+  }
 }
