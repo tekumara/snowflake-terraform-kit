@@ -7,18 +7,6 @@ terraform {
   }
 }
 
-resource "snowflake_warehouse" "warehouse" {
-  // Only ACCOUNTADMIN can assign warehouses to resource monitors
-  provider = snowflake.ACCOUNTADMIN
-
-  name             = local.name
-  comment          = var.comment
-  warehouse_size   = var.warehouse_size
-  resource_monitor = snowflake_resource_monitor.monitor.name
-
-  auto_suspend = var.auto_suspend
-}
-
 resource "snowflake_resource_monitor" "monitor" {
   provider = snowflake.ACCOUNTADMIN
 
@@ -36,4 +24,16 @@ resource "snowflake_resource_monitor" "monitor" {
       start_timestamp
     ]
   }
+}
+
+resource "snowflake_warehouse" "warehouse" {
+  // Only ACCOUNTADMIN can assign warehouses to resource monitors
+  provider = snowflake.ACCOUNTADMIN
+
+  name             = local.name
+  comment          = var.comment
+  warehouse_size   = var.warehouse_size
+  resource_monitor = snowflake_resource_monitor.monitor.name
+
+  auto_suspend = var.auto_suspend
 }
