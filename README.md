@@ -6,7 +6,7 @@ Modules for:
 - [warehouse](modules/warehouse) creates a warehouse and resource monitor and assigns role grants to the passed in role.
 - [service-account](modules/service-account) creates a Snowflake user and AWS Secrets Manager secret to hold the password.
 
-The [jaffle shop example](jaffles.tf) uses these modules to create production and development databases.
+And examples for the Jaffle shop's [production](prod-jaffles.tf) and [development](dev-jaffles.tf) environments.
 
 ## Usage
 

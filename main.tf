@@ -34,3 +34,4 @@ provider "snowflake" {
   alias = "ACCOUNTADMIN"
   role  = "ACCOUNTADMIN"
 }
+
