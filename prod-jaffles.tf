@@ -1,5 +1,5 @@
-module "domain-PROD_JAFFLES" {
-  source = "./modules/domain"
+module "application-PROD_JAFFLES" {
+  source = "./modules/application"
   providers = {
     snowflake.ACCOUNTADMIN  = snowflake.ACCOUNTADMIN
     snowflake.SECURITYADMIN = snowflake.SECURITYADMIN

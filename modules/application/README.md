@@ -1,4 +1,4 @@
-# Domain
+# Application
 
 Creates an admin role, database, warehouse, and service-account (user and secret).
 
@@ -11,7 +11,7 @@ The user and SYSADMIN is granted this role.
 
 Creates a database and assigns [reader and admin role grants](database.tf) to the passed in roles. The database is owned by SYSADMIN and supports a single admin role (ie: single tenancy). All schemas created will be owned by this role.
 
-Schemas and tables are managed by another application (eg: dbt) using the admin role.
+Schemas and tables are managed by the application (eg: dbt) using the admin role.
 
 ## Warehouse
 
