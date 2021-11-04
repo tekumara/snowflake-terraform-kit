@@ -6,14 +6,14 @@ resource "snowflake_database" "db" {
 // reference: https://docs.snowflake.com/en/user-guide/security-access-control-privileges.html
 
 locals {
-  # granted to database_reader_roles + database_admin_roles
+  # granted to database_reader_roles + admin role
   read_privileges = {
     database = ["USAGE"]
     schema   = ["USAGE"]
     table    = ["SELECT", "REFERENCES"]
     view     = ["SELECT", "REFERENCES"]
   }
-  # granted to database_admin_roles only
+  # granted to admin only, we only want one role that can create and own objects
   additional_admin_privileges = {
     database = ["CREATE SCHEMA"]
     schema = [
@@ -46,7 +46,7 @@ locals {
   }
 }
 
-// apply read_privileges defined above to database_reader_roles + database_admin_roles
+// apply read_privileges defined above to database_reader_roles + admin role
 
 resource "snowflake_database_grant" "read_privileges" {
   for_each = toset(local.read_privileges.database)
@@ -86,7 +86,7 @@ resource "snowflake_view_grant" "read_privileges" {
   roles         = concat(var.database_reader_roles, [snowflake_role.admin.name])
 }
 
-// apply additional_admin_privileges defined above to database_admin_roles
+// apply additional_admin_privileges defined above to admin role
 
 resource "snowflake_database_grant" "additional_admin_privileges" {
   for_each = toset(local.additional_admin_privileges.database)

@@ -1,6 +1,6 @@
 # Domain
 
-Creates a role, database, warehouse, and service-account (user and secret).
+Creates an admin role, database, warehouse, and service-account (user and secret).
 
 ## Role
 
@@ -9,12 +9,7 @@ The user and SYSADMIN is granted this role.
 
 ## Database
 
-Creates a database and assigns [reader and admin role grants](database.tf) to the passed in roles. The database is owned by SYSADMIN and supports:
-
-- a single admin role (ie: single tenancy). All schemas created will be owned by this role.
-- multiple admin roles (ie: multi tenancy). Each role can create schemas that only they can see and own.
-
-The admin role(s) should be granted to SYSADMIN outside this module so that SYSADMIN can access schemas and tables created by the admin role(s).
+Creates a database and assigns [reader and admin role grants](database.tf) to the passed in roles. The database is owned by SYSADMIN and supports a single admin role (ie: single tenancy). All schemas created will be owned by this role.
 
 Schemas and tables are managed by another application (eg: dbt) using the admin role.
 
