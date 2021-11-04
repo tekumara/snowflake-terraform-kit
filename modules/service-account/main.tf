@@ -40,6 +40,8 @@ resource "aws_secretsmanager_secret" "snowflake_user" {
 
   // force delete, so we can recreate the secret immediately if needed
   recovery_window_in_days = 0
+
+  kms_key_id = var.secret_kms_key_id
 }
 
 resource "null_resource" "set-password" {

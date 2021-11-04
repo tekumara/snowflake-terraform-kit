@@ -14,3 +14,9 @@ variable "aws_role_secret_reader" {
   type        = string
   default     = null
 }
+
+variable "secret_kms_key_id" {
+  description = "KMS key for encrypting the secret"
+  type        = string
+  default     = null
+}

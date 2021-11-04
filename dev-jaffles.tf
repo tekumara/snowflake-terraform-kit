@@ -1,7 +1,9 @@
 locals {
   // TODO: no-op for now, see tags.tf
-  dev_jaffles_tags = {
-    pii = true
+  dev_jaffles = {
+    tags = {
+      pii = true
+    }
   }
 }
 

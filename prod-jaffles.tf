@@ -1,7 +1,9 @@
 locals {
   // TODO: no-op for now, see tags.tf
-  prod_jaffles_tags = {
-    pii = true
+  prod_jaffles = {
+    tags = {
+      pii = true
+    }
   }
 }
 
@@ -12,8 +14,10 @@ module "service-account-PROD_JAFFLES_SA" {
     snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
   }
 
-  name    = "PROD_JAFFLES_SA"
-  comment = "Jaffle shop service account (prod)"
+  name                   = "PROD_JAFFLES_SA"
+  comment                = "Jaffle shop service account (prod)"
+  aws_role_secret_reader = null
+  secret_kms_key_id      = null
 }
 
 
