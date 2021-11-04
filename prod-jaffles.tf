@@ -25,11 +25,20 @@ module "application-PROD_JAFFLES" {
   }
 }
 
-// additional roles can be granted here,
+// additional roles can be granted here
 
-# resource "snowflake_role_grants" "readonly" {
-#   provider  = snowflake.SECURITYADMIN
-#   role_name = "readonly"
+resource "snowflake_role_grants" "readonly" {
+  provider  = snowflake.SECURITYADMIN
+  role_name = "READONLY"
 
-#   users = [module.domain-PROD_JAFFLES.user.name]
-# }
+  users = [module.application-PROD_JAFFLES.user.name]
+}
+
+// can have many for the same role
+
+resource "snowflake_role_grants" "readonly2" {
+  provider  = snowflake.SECURITYADMIN
+  role_name = "READONLY"
+  roles     = ["SYSADMIN"]
+}
+

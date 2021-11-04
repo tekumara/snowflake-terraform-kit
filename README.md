@@ -40,7 +40,7 @@ All objects are owned by SYSADMIN.
 
 chanzuckerberg/terraform-provider-snowflake [doesn't support ALL grants](https://github.com/chanzuckerberg/terraform-provider-snowflake/discussions/318) for good reason.
 
-snowflake_role_grants will only manage its own grants. If the role has grants performed outside of Terraform they will remain untouched during create, destory, or update operations.
+snowflake_role_grants will only manage its own grants. There can be multiple snowflake_role_grants for the same role. If the role has grants performed outside of Terraform, or other snowflake_role_grants for the same role, they will remain untouched during create, destory, or update operations.
 
 ## See also
 
