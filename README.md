@@ -40,6 +40,8 @@ All objects are owned by SYSADMIN.
 
 chanzuckerberg/terraform-provider-snowflake [doesn't support ALL grants](https://github.com/chanzuckerberg/terraform-provider-snowflake/discussions/318) for good reason.
 
+snowflake_role_grants will only manage its own grants. If the role has grants performed outside of Terraform they will remain untouched during create, destory, or update operations.
+
 ## See also
 
 - [immuta/terraform-snowflake-fast-data-warehouse](https://github.com/immuta/terraform-snowflake-fast-data-warehouse) was the inspiration for this project. This project is a lean version of the immuta project, which has more features eg: modules for creating roles. immuta uses a single provider configuration, whereas this project makes the required roles (ACCOUNTADMIN, SECURITYADMIN etc.) explicit.

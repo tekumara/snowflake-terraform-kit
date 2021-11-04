@@ -24,3 +24,12 @@ module "domain-PROD_JAFFLES" {
     pii = true
   }
 }
+
+// additional roles can be granted here,
+
+# resource "snowflake_role_grants" "readonly" {
+#   provider  = snowflake.SECURITYADMIN
+#   role_name = "readonly"
+
+#   users = [module.domain-PROD_JAFFLES.user.name]
+# }
