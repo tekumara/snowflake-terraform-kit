@@ -1,20 +1,3 @@
-terraform {
-  required_providers {
-    snowflake = {
-      source                = "chanzuckerberg/snowflake"
-      configuration_aliases = [snowflake.SECURITYADMIN]
-    }
-    aws = {}
-  }
-}
-
-resource "snowflake_user" "user" {
-  provider = snowflake.SECURITYADMIN
-  name     = local.name
-  comment  = var.comment
-  // password set below
-}
-
 data "snowflake_current_account" "this" {}
 
 resource "aws_secretsmanager_secret" "snowflake_user" {

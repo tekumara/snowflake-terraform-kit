@@ -1,0 +1,33 @@
+# Domain
+
+Creates a role, database, warehouse, and service-account (user and secret).
+
+## Role
+
+An admin role. Granted admin access to the database, and usage of the warehouse.
+The user and SYSADMIN is granted this role.
+
+## Database
+
+Creates a database and assigns [reader and admin role grants](database.tf) to the passed in roles. The database is owned by SYSADMIN and supports:
+
+- a single admin role (ie: single tenancy). All schemas created will be owned by this role.
+- multiple admin roles (ie: multi tenancy). Each role can create schemas that only they can see and own.
+
+The admin role(s) should be granted to SYSADMIN outside this module so that SYSADMIN can access schemas and tables created by the admin role(s).
+
+Schemas and tables are managed by another application (eg: dbt) using the admin role.
+
+## Warehouse
+
+Creates a warehouse and resource monitor and assigns role grants to the admin role.
+
+## Service account
+
+Creates a Snowflake user and AWS Secrets Manager secret to hold their password. A resource policy grants cross-account access to the secret.
+
+[sfpassman](https://github.com/tekumara/sfpassman) is used to set the password and secret. This avoids storing the password in the Terraform state file.sfpassman must be on the path and the following environment variables must be set:
+
+- SNOWFLAKE_USER: a snowflake admin user with SECURITYADMIN permissions
+- SNOWFLAKE_PASSWORD: the snowflake admin user's password
+- SNOWFLAKE_REGION: the snowflake region, eg: `ap-southeast-2`

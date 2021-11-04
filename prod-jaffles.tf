@@ -1,66 +1,26 @@
-locals {
-  // TODO: no-op for now, see tags.tf
-  prod_jaffles = {
-    tags = {
-      pii = true
-    }
-  }
-}
-
-// service account user
-module "service-account-PROD_JAFFLES_SA" {
-  source = "./modules/service-account"
-  providers = {
-    snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
-  }
-
-  name                   = "PROD_JAFFLES_SA"
-  comment                = "Jaffle shop service account (prod)"
-  aws_role_secret_reader = null
-  secret_kms_key_id      = null
-}
-
-
-// role
-resource "snowflake_role" "prod_jaffles_admin" {
-  provider = snowflake.SECURITYADMIN
-  name     = "PROD_JAFFLES_ADMIN"
-}
-
-resource "snowflake_role_grants" "prod_jaffles_admin" {
-  provider  = snowflake.SECURITYADMIN
-  role_name = snowflake_role.prod_jaffles_admin.name
-
-  roles = [
-    "SYSADMIN",
-  ]
-
-  users = [module.service-account-PROD_JAFFLES_SA.name]
-}
-
-// database
-module "database-PROD_JAFFLES" {
-  source = "./modules/database"
-  providers = {
-    snowflake               = snowflake
-    snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
-  }
-
-  name         = "PROD_JAFFLES"
-  comment      = "My jaffle shop (prod)"
-  admin_roles  = [snowflake_role.prod_jaffles_admin.name]
-  reader_roles = []
-}
-
-// warehouse + monitor
-module "warehouse-PROD_JAFFLES_WH" {
-  source = "./modules/warehouse"
+module "domain-PROD_JAFFLES" {
+  source = "./modules/domain"
   providers = {
     snowflake.ACCOUNTADMIN  = snowflake.ACCOUNTADMIN
     snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
   }
 
-  name            = "PROD_JAFFLES_WH"
-  comment         = "Jaffle shop warehouse (prod)"
-  warehouse_roles = [snowflake_role.prod_jaffles_admin.name]
+  user_name          = "PROD_JAFFLES_SA"
+  user_comment       = "Jaffle shop service account (prod)"
+  secret_reader_role = null
+  secret_kms_key_id  = null
+
+  role_name = "PROD_JAFFLES_ADMIN"
+
+  database_name         = "PROD_JAFFLES"
+  database_comment      = "My jaffle shop (prod)"
+  database_reader_roles = []
+
+  warehouse_name    = "PROD_JAFFLES_WH"
+  warehouse_comment = "Jaffle shop warehouse (prod)"
+
+  // TODO: no-op for now, see tags.tf
+  tags = {
+    pii = true
+  }
 }
