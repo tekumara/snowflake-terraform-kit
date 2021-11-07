@@ -7,4 +7,4 @@ This module creates a database and assigns [reader and admin role grants](grants
 
 The admin role(s) should be granted to SYSADMIN outside this module so that SYSADMIN can access schemas and tables created by the admin role(s).
 
-Schemas and tables are managed by another application (eg: dbt) using the admin role.
+Schemas and tables are managed by the application (eg: dbt) using the admin role.

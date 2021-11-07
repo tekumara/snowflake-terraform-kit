@@ -1,4 +1,4 @@
-# Application
+# Workspace
 
 Creates an admin role, database, warehouse, and user and secret (service account).
 

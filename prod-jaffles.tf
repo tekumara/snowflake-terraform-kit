@@ -1,5 +1,5 @@
-module "application-PROD_JAFFLES" {
-  source = "./modules/application"
+module "workspace-PROD_JAFFLES" {
+  source = "./modules/workspace"
   providers = {
     snowflake.ACCOUNTADMIN  = snowflake.ACCOUNTADMIN
     snowflake.SECURITYADMIN = snowflake.SECURITYADMIN
@@ -31,7 +31,7 @@ resource "snowflake_role_grants" "readonly" {
   provider  = snowflake.SECURITYADMIN
   role_name = "READONLY"
 
-  users = [module.application-PROD_JAFFLES.user.name]
+  users = [module.workspace-PROD_JAFFLES.user.name]
 }
 
 // can have many for the same role
