@@ -1,6 +1,6 @@
 # Application
 
-Creates an admin role, database, warehouse, and service-account (user and secret).
+Creates an admin role, database, warehouse, and user and secret (service account).
 
 ## Role
 
@@ -17,11 +17,11 @@ Schemas and tables are managed by the application (eg: dbt) using the admin role
 
 Creates a warehouse and resource monitor and assigns role grants to the admin role.
 
-## Service account
+## User and secret (service account)
 
 Creates a Snowflake user and AWS Secrets Manager secret to hold their password. A resource policy grants cross-account access to the secret.
 
-[sfpassman](https://github.com/tekumara/sfpassman) is used to set the password and secret. This avoids storing the password in the Terraform state file.sfpassman must be on the path and the following environment variables must be set:
+[sfpassman](https://github.com/tekumara/sfpassman) is used to set the password and secret. This avoids storing the password in the Terraform state file. sfpassman must be on the path and the following environment variables must be set:
 
 - SNOWFLAKE_USER: a snowflake admin user with SECURITYADMIN permissions
 - SNOWFLAKE_PASSWORD: the snowflake admin user's password

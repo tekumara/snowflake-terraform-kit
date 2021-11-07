@@ -9,7 +9,7 @@ variable "comment" {
   default     = null
 }
 
-variable "secret_reader_role" {
+variable "secret_reader_iam_role" {
   description = "AWS IAM role granted access to read the secret (optional)"
   type        = string
   default     = null

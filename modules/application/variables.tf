@@ -13,7 +13,7 @@ variable "user_comment" {
 
 // secret
 
-variable "secret_reader_role" {
+variable "secret_reader_iam_role" {
   description = "AWS IAM role granted access to read the secret (optional)"
   type        = string
   default     = null
@@ -55,7 +55,7 @@ variable "database_reader_roles" {
 variable "monitor_credit_quota" {
   description = "The number of credits allocated to the resource monitor per frequency interval"
   type        = number
-  default     = 50
+  default     = 100
 }
 
 variable "monitor_frequency" {

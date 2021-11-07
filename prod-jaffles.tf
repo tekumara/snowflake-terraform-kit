@@ -7,7 +7,7 @@ module "application-PROD_JAFFLES" {
 
   user_name          = "PROD_JAFFLES_SA"
   user_comment       = "Jaffle shop service account (prod)"
-  secret_reader_role = null
+  secret_reader_iam_role = null
   secret_kms_key_id  = null
 
   role_name = "PROD_JAFFLES_ADMIN"

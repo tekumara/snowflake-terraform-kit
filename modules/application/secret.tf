@@ -4,14 +4,14 @@ resource "aws_secretsmanager_secret" "snowflake_user" {
   name        = "snowflakeuser/${snowflake_user.user.name}"
   description = "Snowflake user password"
 
-  policy = var.secret_reader_role == null ? null : jsonencode({
+  policy = var.secret_reader_iam_role == null ? null : jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Sid    = "CrossAccountRead"
         Effect = "Allow"
         Principal = {
-          AWS = var.secret_reader_role
+          AWS = var.secret_reader_iam_role
         }
         Action = [
           "secretsmanager:GetSecretValue"
