@@ -9,7 +9,7 @@ Modules for:
 
 Examples:
 
-- Jaffle shop [production](prod-jaffles.tf) using the domain module.
+- Jaffle shop [production](prod-jaffles.tf) using the workspace module.
 - Jaffle shop [development](dev-jaffles.tf) using the individual modules.
 
 ## Usage
