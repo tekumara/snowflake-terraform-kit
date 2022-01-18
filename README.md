@@ -40,7 +40,25 @@ All objects are owned by SYSADMIN.
 
 chanzuckerberg/terraform-provider-snowflake [doesn't support ALL grants](https://github.com/chanzuckerberg/terraform-provider-snowflake/discussions/318) for good reason.
 
-snowflake_role_grants will only manage its own grants. There can be multiple snowflake_role_grants for the same role. If the role has grants performed outside of Terraform, or other snowflake_role_grants for the same role, they will remain untouched during create, destory, or update operations.
+A snowflake_role_grants resource will only manage its own grants. There can be multiple snowflake_role_grants for the same role. If the role has grants performed outside of Terraform, or other snowflake_role_grants for the same role, they will remain untouched during create, destory, or update operations.
+
+### Use a single database object grant resource
+
+Database object grants are keyed by a [grantid struct](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/grant_helpers.go#L79):
+
+```
+type grantID struct {
+    ResourceName string
+    SchemaName   string
+    ObjectName   string
+    Privilege    string
+    GrantOption  bool
+}
+```
+
+eg: [snowflake_database_grant](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/database_grant.go#L86), [snowflake_schema_grant](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/table_grant.go#L137), [snowflake_table_grant](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/table_grant.go#L137), and [snowflake_view_grant](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/view_grant.go#L134) (to name just a handful).
+
+This means there can only be one grant per (resource|schema|object|priv|grantoption) combination. If there is more than one resource, then they will clobber each other and you'll see changes detected on refresh. For an example see [#733](https://github.com/chanzuckerberg/terraform-provider-snowflake/issues/733). To avoid this, assign the grant to all roles in a single resource.
 
 ## See also
 
