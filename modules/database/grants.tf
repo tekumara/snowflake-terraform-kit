@@ -19,7 +19,8 @@ locals {
       "CREATE MATERIALIZED VIEW",
       "CREATE PIPE",
       "CREATE PROCEDURE",
-      "CREATE ROW ACCESS POLICY",
+      # Requires Snowflake Enterprise Edition
+      # "CREATE ROW ACCESS POLICY",
       "CREATE SEQUENCE",
       "CREATE STAGE",
       "CREATE STREAM",

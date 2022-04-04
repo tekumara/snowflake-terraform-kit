@@ -26,19 +26,23 @@ module "workspace-PROD_JAFFLES" {
 }
 
 // additional roles can be granted here
+resource "snowflake_role" "example" {
+  provider = snowflake.SECURITYADMIN
+  name     = "EXAMPLE_ROLE"
+}
 
-resource "snowflake_role_grants" "readonly" {
+resource "snowflake_role_grants" "example_grant_PROD_JAFFLES_SA" {
   provider  = snowflake.SECURITYADMIN
-  role_name = "READONLY"
+  role_name = "EXAMPLE_ROLE"
 
   users = [module.workspace-PROD_JAFFLES.user.name]
 }
 
 // can have many for the same role
 
-resource "snowflake_role_grants" "readonly2" {
+resource "snowflake_role_grants" "example_grant_SYSADMIN" {
   provider  = snowflake.SECURITYADMIN
-  role_name = "READONLY"
+  role_name = "EXAMPLE_ROLE"
   roles     = ["SYSADMIN"]
 }
 
