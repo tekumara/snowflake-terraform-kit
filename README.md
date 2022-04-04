@@ -42,9 +42,13 @@ chanzuckerberg/terraform-provider-snowflake [doesn't support ALL grants](https:/
 
 A snowflake_role_grants resource will only manage its own grants. There can be multiple snowflake_role_grants for the same role. If the role has grants performed outside of Terraform, or other snowflake_role_grants for the same role, they will remain untouched during create, destory, or update operations.
 
-### Use a single database object grant resource
+### Object grants
 
-Database object grants are keyed by a [grantid struct](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/grant_helpers.go#L79):
+Database object grants by default are owned by a single resource. Grants in other resources for the same object, or applied outside terraform, will be overwritten.
+
+#### Why?
+
+The [grantid struct](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/grant_helpers.go#L79) is defined as:
 
 ```
 type grantID struct {
@@ -58,7 +62,13 @@ type grantID struct {
 
 eg: [snowflake_database_grant](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/database_grant.go#L86), [snowflake_schema_grant](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/table_grant.go#L137), [snowflake_table_grant](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/table_grant.go#L137), and [snowflake_view_grant](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/c07d5820bea7ac3d8a5037b0486c405fdf58420e/pkg/resources/view_grant.go#L134) (to name just a handful).
 
-This means there can only be one grant per (resource|schema|object|priv|grantoption) combination. If there is more than one resource, then they will clobber each other and you'll see changes detected on refresh. For an example see [#733](https://github.com/chanzuckerberg/terraform-provider-snowflake/issues/733). To avoid this, assign the grant to all roles in a single resource.
+This means there can only be one grant per (resource|schema|object|priv|grantoption) combination. If there is more than one resource, then they will clobber each other and you'll see changes detected on refresh. For an example see [#733](https://github.com/chanzuckerberg/terraform-provider-snowflake/issues/733).
+
+#### Enabling multiple grants
+
+To avoid this, assign the grant to all roles in a single resource, or use [enable_multiple_grants = true](https://github.com/chanzuckerberg/terraform-provider-snowflake/blob/5182361c48463325e7ad830702ad58a9617064df/docs/resources/table_grant.md#optional):
+
+> enable_multiple_grants (Boolean) When this is set to true, multiple grants of the same type can be created. This will cause Terraform to not revoke grants applied to roles and objects outside Terraform.
 
 ## See also
 
