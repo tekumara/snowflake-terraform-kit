@@ -4,7 +4,7 @@ Modules for:
 
 - [database](modules/database) creates a database and assigns reader and admin role grants to the passed in roles. Schemas and tables are managed by another application (eg: dbt) using the admin role.
 - [warehouse](modules/warehouse) creates a warehouse and resource monitor and assigns role grants to the passed in role.
-- [service-account](modules/service-account) creates a Snowflake user and AWS Secrets Manager secret to hold the password.
+- [service-account](modules/service-account) creates a Snowflake user and AWS Secrets Manager secret to hold the private key.
 - [workspace](modules/workspace) creates all of the above: a database, warehouse, user, secret plus a role.
 
 Examples:

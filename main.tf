@@ -9,6 +9,10 @@ terraform {
   required_version = ">= 1.0"
 }
 
+provider "aws" {
+  region = "us-east-1"
+}
+
 # Snowflake Providers
 provider "snowflake" {
   username = var.snowflake_username

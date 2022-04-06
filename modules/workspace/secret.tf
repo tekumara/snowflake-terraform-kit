@@ -1,7 +1,7 @@
 data "snowflake_current_account" "this" {}
 
 resource "aws_secretsmanager_secret" "snowflake_user" {
-  name        = "snowflakeuser/${snowflake_user.user.name}"
+  name        = "snowflake.user.password.${snowflake_user.user.name}"
   description = "Snowflake user password"
 
   policy = var.secret_reader_iam_role == null ? null : jsonencode({
