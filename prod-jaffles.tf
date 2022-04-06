@@ -33,7 +33,7 @@ resource "snowflake_role" "example" {
 
 resource "snowflake_role_grants" "example_grant_PROD_JAFFLES_SA" {
   provider  = snowflake.SECURITYADMIN
-  role_name = "EXAMPLE_ROLE"
+  role_name = snowflake_role.example.name
 
   users = [module.workspace-PROD_JAFFLES.user.name]
 }
@@ -42,7 +42,7 @@ resource "snowflake_role_grants" "example_grant_PROD_JAFFLES_SA" {
 
 resource "snowflake_role_grants" "example_grant_SYSADMIN" {
   provider  = snowflake.SECURITYADMIN
-  role_name = "EXAMPLE_ROLE"
+  role_name = snowflake_role.example.name
   roles     = ["SYSADMIN"]
 }
 

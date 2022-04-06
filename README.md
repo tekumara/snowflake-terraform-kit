@@ -28,7 +28,7 @@ Set your password as an environment variable:
 export SNOWFLAKE_PASSWORD=topsecret
 ```
 
-Create the [example](jaffles.tf) terraform plan:
+Create the [example](main.tf) terraform plan:
 
 ```
 terraform apply -var-file account.tfvars
