@@ -17,11 +17,9 @@ resource "snowflake_user" "user" {
   provider = snowflake.SECURITYADMIN
   name     = local.name
   comment  = var.comment
-  # strip out the pem header and footer
+  # strip PEM BEGIN/END markers otherwise Snowflake barfs
   rsa_public_key = substr(
-    tls_private_key.keypair.public_key_pem,
-    27,
-    398
+    tls_private_key.keypair.public_key_pem, 27, 398
   )
 }
 
@@ -54,10 +52,6 @@ resource "aws_secretsmanager_secret" "snowflake_user_private_key" {
 
 resource "aws_secretsmanager_secret_version" "privatekey" {
   secret_id = aws_secretsmanager_secret.snowflake_user_private_key.id
-  # strip out the pem header and footer
-  secret_string = substr(
-    tls_private_key.keypair.private_key_pem,
-    32,
-    1612
-  )
+  # save with PEM BEGIN/END markers
+  secret_string = tls_private_key.keypair.private_key_pem
 }
