@@ -58,6 +58,6 @@ resource "aws_secretsmanager_secret_version" "privatekey" {
   secret_string = substr(
     tls_private_key.keypair.private_key_pem,
     32,
-    1616
+    1612
   )
 }
