@@ -1,6 +1,6 @@
 resource "snowflake_database" "db" {
-  name    = local.database_name
-  comment = var.database_comment
+  name    = upper(var.database.name)
+  comment = var.database.comment
 }
 
 // reference: https://docs.snowflake.com/en/user-guide/security-access-control-privileges.html

@@ -33,15 +33,11 @@ variable "role_name" {
 }
 
 // database
-variable "database_name" {
-  description = "Database name"
-  type        = string
-}
-
-variable "database_comment" {
-  description = "Database comment"
-  type        = string
-  default     = null
+variable "database" {
+  type = object({
+    name    = string
+    comment = optional(string)
+  })
 }
 
 variable "database_reader_roles" {

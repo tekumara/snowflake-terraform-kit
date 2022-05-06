@@ -12,9 +12,10 @@ module "workspace-PROD_JAFFLES" {
 
   role_name = "PROD_JAFFLES_ADMIN"
 
-  database_name         = "PROD_JAFFLES"
-  database_comment      = "My jaffle shop (prod)"
-  database_reader_roles = []
+  database = {
+    name    = "PROD_JAFFLES"
+    comment = "My jaffle shop (prod)"
+  }
 
   warehouse = {
     name    = "PROD_JAFFLES_WH"
