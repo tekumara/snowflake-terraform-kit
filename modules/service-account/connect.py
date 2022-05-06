@@ -20,7 +20,7 @@ def fetch_secret() -> str:
 def test_connect(private_key_pem: str) -> None:
     print("connecting...")
 
-    # strip off PEM BEGIN/END markers and decode for Snowflake
+    # convert to DER bytes format for Snowflake by stripping off the PEM BEGIN/END markers and decoding
     private_key_bytes = base64.b64decode(private_key_pem[private_key_pem.find("\n") + 1 : private_key_pem.rfind("\n")])
 
     with snowflake.connector.connect(
@@ -42,7 +42,7 @@ def write_pem_file(private_key_path: str, private_key_pem: str) -> None:
 
 
 def test_connect_using_pem_file(private_key_path: str) -> None:
-    # test we can read the private key in the same way dbt does (ie: using cryptography/openssl)
+    # test we can read and use a private key pem file in the same way dbt does (ie: using cryptography/openssl)
     # see https://github.com/dbt-labs/dbt-snowflake/blob/0f06342/dbt/adapters/snowflake/connections.py#L201
     # and https://docs.snowflake.com/en/user-guide/python-connector-example.html#using-key-pair-authentication-key-pair-rotation
     with open(private_key_path, "rb") as key:
