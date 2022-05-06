@@ -50,48 +50,20 @@ variable "database_reader_roles" {
   default     = []
 }
 
-// resource monitor
-
-variable "monitor_credit_quota" {
-  description = "The number of credits allocated to the resource monitor per frequency interval"
-  type        = number
-  default     = 100
-}
-
-variable "monitor_frequency" {
-  description = "The frequency interval at which the credit usage resets to 0"
-  type        = string
-  default     = "WEEKLY"
+variable "warehouse" {
+  type = object({
+    name                 = string
+    size                 = optional(string)
+    auto_suspend         = optional(number)
+    monitor_credit_quota = optional(number)
+    monitor_frequency    = optional(string)
+  })
 
   validation {
-    condition     = contains(["MONTHLY", "DAILY", "WEEKLY", "YEARLY", "NEVER"], var.monitor_frequency)
+    condition     = contains(["null", "MONTHLY", "DAILY", "WEEKLY", "YEARLY", "NEVER"], var.warehouse.monitor_frequency == null ? "null" : var.warehouse.monitor_frequency)
     error_message = "Invalid frequency."
   }
-}
 
-
-// warehouse
-variable "warehouse_name" {
-  description = "Warehouse name"
-  type        = string
-}
-
-variable "warehouse_comment" {
-  description = "Warehouse comment"
-  type        = string
-  default     = null
-}
-
-variable "warehouse_size" {
-  description = "Warehouse size"
-  type        = string
-  default     = "x-small"
-}
-
-variable "warehouse_auto_suspend" {
-  description = "Auto suspend (seconds)"
-  type        = number
-  default     = 60
 }
 
 // tags

@@ -2,9 +2,9 @@ resource "snowflake_resource_monitor" "monitor" {
   provider = snowflake.ACCOUNTADMIN
 
   name         = "${local.warehouse_name}_MONITOR"
-  credit_quota = var.monitor_credit_quota
+  credit_quota = coalesce(var.warehouse.monitor_credit_quota, 100)
 
-  frequency = var.monitor_frequency
+  frequency = coalesce(var.warehouse.monitor_frequency, "WEEKLY")
 
   start_timestamp = "IMMEDIATELY"
 
@@ -21,12 +21,19 @@ resource "snowflake_warehouse" "warehouse" {
   // Only ACCOUNTADMIN can assign warehouses to resource monitors
   provider = snowflake.ACCOUNTADMIN
 
-  name             = local.warehouse_name
-  comment          = var.warehouse_comment
-  warehouse_size   = var.warehouse_size
+  name             = var.warehouse.name
+  comment          = "workspace warehouse"
+  warehouse_size   = coalesce(var.warehouse.size, "X-Small")
   resource_monitor = snowflake_resource_monitor.monitor.name
 
-  auto_suspend = var.warehouse_auto_suspend
+  auto_suspend = coalesce(var.warehouse.auto_suspend, 60)
+
+  // don't revert these when modified outside terraform by users manually
+  lifecycle {
+    ignore_changes = [
+      warehouse_size, auto_suspend
+    ]
+  }
 }
 
 

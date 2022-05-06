@@ -16,8 +16,10 @@ module "workspace-PROD_JAFFLES" {
   database_comment      = "My jaffle shop (prod)"
   database_reader_roles = []
 
-  warehouse_name    = "PROD_JAFFLES_WH"
-  warehouse_comment = "Jaffle shop warehouse (prod)"
+  warehouse = {
+    name    = "PROD_JAFFLES_WH"
+    comment = "Jaffle shop warehouse (prod)"
+  }
 
   // TODO: no-op for now, see tags.tf
   tags = {
