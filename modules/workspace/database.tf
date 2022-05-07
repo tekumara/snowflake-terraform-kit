@@ -54,7 +54,7 @@ resource "snowflake_database_grant" "read_privileges" {
 
   database_name = snowflake_database.db.name
   privilege     = each.key
-  roles         = concat(var.database_reader_roles, [snowflake_role.admin.name])
+  roles         = concat(local.database_reader_roles, [snowflake_role.admin.name])
 }
 
 resource "snowflake_schema_grant" "read_privileges" {
@@ -64,7 +64,7 @@ resource "snowflake_schema_grant" "read_privileges" {
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = concat(var.database_reader_roles, [snowflake_role.admin.name])
+  roles         = concat(local.database_reader_roles, [snowflake_role.admin.name])
 }
 
 resource "snowflake_table_grant" "read_privileges" {
@@ -74,7 +74,7 @@ resource "snowflake_table_grant" "read_privileges" {
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = concat(var.database_reader_roles, [snowflake_role.admin.name])
+  roles         = concat(local.database_reader_roles, [snowflake_role.admin.name])
 }
 
 resource "snowflake_view_grant" "read_privileges" {
@@ -84,7 +84,7 @@ resource "snowflake_view_grant" "read_privileges" {
   database_name = snowflake_database.db.name
   on_future     = true
   privilege     = each.key
-  roles         = concat(var.database_reader_roles, [snowflake_role.admin.name])
+  roles         = concat(local.database_reader_roles, [snowflake_role.admin.name])
 }
 
 // apply additional_admin_privileges defined above to admin role

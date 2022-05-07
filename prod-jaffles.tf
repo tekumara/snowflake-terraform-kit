@@ -12,7 +12,15 @@ module "workspace-PROD_JAFFLES" {
     secret_kms_key_id       = null
   }
 
-  role_name = "PROD_JAFFLES_ADMIN"
+  admin_role = {
+    name           = "PROD_JAFFLES_ADMIN"
+    grant_to_users = []
+  }
+
+  reader_role = {
+    name           = "PROD_JAFFLES_READER"
+    grant_to_roles = []
+  }
 
   database = {
     name    = "PROD_JAFFLES"

@@ -7,25 +7,26 @@ variable "service_account" {
   })
 }
 
-// role
-
-variable "role_name" {
-  description = "Role name for the service account user"
-  type        = string
+variable "admin_role" {
+  type = object({
+    name           = string
+    grant_to_users = optional(list(string))
+  })
 }
 
-// database
+variable "reader_role" {
+  type = object({
+    name           = string
+    grant_to_roles = optional(list(string))
+  })
+  default = null
+}
+
 variable "database" {
   type = object({
     name    = string
     comment = optional(string)
   })
-}
-
-variable "database_reader_roles" {
-  description = "Roles to assign reader privileges to"
-  type        = list(string)
-  default     = []
 }
 
 variable "warehouse" {
@@ -44,7 +45,6 @@ variable "warehouse" {
 
 }
 
-// tags
 variable "tags" {
   description = "Tags"
   type        = map(any)

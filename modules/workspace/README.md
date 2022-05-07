@@ -1,11 +1,15 @@
 # Workspace
 
-Creates an admin role, database, warehouse, and user and secret (service account).
+Creates an admin role, database, warehouse, and service account user and secret (service account).
 
-## Role
+## Admin Role
 
 An admin role. Granted admin access to the database, and usage of the warehouse.
-The user and SYSADMIN is granted this role.
+The service account user, SYSADMIN is granted this role, plus optionally other users.
+
+## Reader Role (optional)
+
+An reader role. Granted read access to the database. Can be granted to other roles.
 
 ## Database
 

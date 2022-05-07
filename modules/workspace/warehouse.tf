@@ -21,7 +21,7 @@ resource "snowflake_warehouse" "warehouse" {
   // Only ACCOUNTADMIN can assign warehouses to resource monitors
   provider = snowflake.ACCOUNTADMIN
 
-  name             = var.warehouse.name
+  name             = local.warehouse_name
   comment          = "workspace warehouse"
   warehouse_size   = coalesce(var.warehouse.size, "X-Small")
   resource_monitor = snowflake_resource_monitor.monitor.name

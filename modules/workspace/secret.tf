@@ -4,7 +4,7 @@ resource "aws_secretsmanager_secret" "snowflake_user" {
   name        = "snowflake.user.password.${lower(snowflake_user.user.name)}"
   description = "Snowflake user password"
 
-  policy = length(coalesce(var.service_account.secret_reader_iam_roles,[])) == 0 ? null : jsonencode({
+  policy = length(coalesce(var.service_account.secret_reader_iam_roles, [])) == 0 ? null : jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
