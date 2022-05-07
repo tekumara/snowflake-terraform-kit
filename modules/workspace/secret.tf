@@ -1,17 +1,17 @@
 data "snowflake_current_account" "this" {}
 
 resource "aws_secretsmanager_secret" "snowflake_user" {
-  name        = "snowflake.user.password.${snowflake_user.user.name}"
+  name        = "snowflake.user.password.${lower(snowflake_user.user.name)}"
   description = "Snowflake user password"
 
-  policy = var.secret_reader_iam_role == null ? null : jsonencode({
+  policy = length(coalesce(var.service_account.secret_reader_iam_roles,[])) == 0 ? null : jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Sid    = "CrossAccountRead"
         Effect = "Allow"
         Principal = {
-          AWS = var.secret_reader_iam_role
+          AWS = var.service_account.secret_reader_iam_roles
         }
         Action = [
           "secretsmanager:GetSecretValue"
@@ -24,7 +24,7 @@ resource "aws_secretsmanager_secret" "snowflake_user" {
   // force delete, so we can recreate the secret immediately if needed
   recovery_window_in_days = 0
 
-  kms_key_id = var.secret_kms_key_id
+  kms_key_id = var.service_account.secret_kms_key_id
 }
 
 resource "null_resource" "set-password" {
