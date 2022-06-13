@@ -1,0 +1,5 @@
+# account details example
+snowflake_account  = "foo"
+snowflake_username = "bar"
+snowflake_region   = "ap-southeast-2"
+#SNOWFLAKE_PASSWORD = "SET AS ENV VAR"
